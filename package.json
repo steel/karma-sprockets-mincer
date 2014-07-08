@@ -2,13 +2,22 @@
   "name": "karma-sprockets-mincer",
   "version": "0.0.1",
   "main": "index.coffee",
+  "keywords": ["karma", "sprockets"],
+  "homepage": "http://github.com/steel/karma-sprockets-mincer",
+  "author": {
+    "name": "Steel Fu",
+    "email": "steelfu@gmail.com"
+  },
   "dependencies": {
     "mincer": "",
     "haml-coffee": ""
   },
-  "readme": "ERROR: No README data found!",
-  "_id": "karma-sprockets-mincer@0.0.1",
-  "scripts": {},
-  "_shasum": "92bc84521bc278bf0b320ed1615dc188c59d2670",
-  "_from": "/Users/steel/projects/karmer-sprockets-mincer"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steel/karma-sprockets-mincer.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steel/karma-sprockets-mincer/issues"
+  }
 }
