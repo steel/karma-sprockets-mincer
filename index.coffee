@@ -1,5 +1,5 @@
 Mincer = require('mincer')
-Fs = require('fs')
+Fs = require('node-fs')
 Path = require('path')
 
 isAbsolutePath = (path) ->
@@ -28,7 +28,8 @@ createSprockets = (config) ->
     tmpFile = tmpFile.replace(/\.coffee$/, '.js')
 
     unless Fs.existsSync Path.dirname(tmpFile)
-      Fs.mkdirSync Path.dirname(tmpFile)
+      # Recursively create the dir with node-fs
+      Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
 
     Fs.writeFileSync tmpFile, asset.toString()
 
