@@ -24,16 +24,16 @@ npm install karma-sprockets-mincer --save-dev
 
 Add the plugin to your config file.
 
-```json
-plugins: [
-  'karma-phantomjs-launcher'
-  [...]
-  'karma-sprockets-mincer'
-]
+```coffeescript
+  plugins: [
+    'karma-phantomjs-launcher'
+    [...]
+    'karma-sprockets-mincer'
+  ]
 ```
 
 Next, configure the paths that the Sprockets (Mincer) environment should know about.
-```json
+```coffeescript
 sprocketsPaths: [
   'app/assets/javascripts'
   'lib/assets/javascripts'
@@ -42,7 +42,7 @@ sprocketsPaths: [
 ```
 
 Then, configure the js bundle files that Sprockets should generate. These files will be regenerated whenever a sprockets environment file changes.
-```json
+```coffeescript
 sprocketsBundles: [
   'application.js'
 ]
