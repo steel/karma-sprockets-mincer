@@ -44,6 +44,8 @@ sprocketsPaths: [
 Then, configure the js bundle files that Sprockets should generate. These files will be regenerated whenever a sprockets environment file changes.
 ```coffeescript
 sprocketsBundles: [
-  'application.js'
+  'application.coffee'
+  'spec_helper.coffee'
+  'specs.coffee'
 ]
 ```
