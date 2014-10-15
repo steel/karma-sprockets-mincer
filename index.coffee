@@ -2,6 +2,7 @@ Mincer = require('mincer')
 Fs = require('node-fs')
 Path = require('path')
 Chokidar = require('chokidar')
+Shell = require('shelljs')
 
 isAbsolutePath = (path) ->
   if !path.length
@@ -41,6 +42,15 @@ createSprockets = (config) ->
   sprockets = new Mincer.Environment()
 
   tmpPath = process.cwd() + "/tmp/sprockets-mincer/"
+
+  # Add the rubygem paths
+  for gem, sprocketsPath of config.rubygems
+    {code, output} = Shell.exec "bundle show #{gem}", silent: true
+    if code == 0
+      gemPath = output.trim()
+      Shell.exec "cd #{gemPath}; npm install"
+      console.log "Appending rubygem path: #{gemPath}/#{sprocketsPath}"
+      config.sprocketsPaths.push "#{gemPath}/#{sprocketsPath}"
 
   # Set up the sprockets environment
   for path in config.sprocketsPaths
