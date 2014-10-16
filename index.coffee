@@ -4,6 +4,9 @@ Path = require('path')
 Chokidar = require('chokidar')
 Shell = require('shelljs')
 
+# Skip .erb files because Ruby <> JS
+require("mincer-fileskipper") Mincer, [".erb"]
+
 isAbsolutePath = (path) ->
   if !path.length
     return false

@@ -1,6 +1,6 @@
 {
   "name": "karma-sprockets-mincer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "index.coffee",
   "keywords": ["karma", "sprockets"],
   "homepage": "http://github.com/steel/karma-sprockets-mincer",
@@ -9,11 +9,12 @@
     "email": "steelfu@gmail.com"
   },
   "dependencies": {
-    "mincer": "",
-    "haml-coffee": "",
+    "mincer": "0.5.13",
+    "haml-coffee": "*",
     "node-fs": "^0.1.7",
     "chokidar": "^0.8.2",
-    "shelljs": "0.3.0"
+    "shelljs": "0.3.0",
+    "mincer-fileskipper": "*"
   },
   "repository": {
     "type": "git",
