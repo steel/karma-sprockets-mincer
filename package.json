@@ -1,6 +1,6 @@
 {
   "name": "karma-sprockets-mincer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "index.coffee",
   "keywords": ["karma", "sprockets"],
   "homepage": "http://github.com/steel/karma-sprockets-mincer",

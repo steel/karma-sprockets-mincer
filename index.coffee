@@ -17,17 +17,20 @@ writeFiles = (bundles, sprockets, tmpPath) ->
   for bundle in bundles
     asset = sprockets.findAsset bundle
 
-    # write to file
-    tmpFile = Path.join(tmpPath, asset.logicalPath)
-    tmpFile = tmpFile.replace(/\.js\.coffee$/, '.js')
-    tmpFile = tmpFile.replace(/\.coffee$/, '.js')
+    if asset.logicalPath?
+      # write to file
+      tmpFile = Path.join(tmpPath, asset.logicalPath)
+      tmpFile = tmpFile.replace(/\.js\.coffee$/, '.js')
+      tmpFile = tmpFile.replace(/\.coffee$/, '.js')
 
-    unless Fs.existsSync Path.dirname(tmpFile)
-      # Recursively create the dir with node-fs
-      Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
+      unless Fs.existsSync Path.dirname(tmpFile)
+        # Recursively create the dir with node-fs
+        Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
 
-    Fs.writeFileSync tmpFile, asset.toString()
-    writtenFiles.push tmpFile
+      Fs.writeFileSync tmpFile, asset.toString()
+      writtenFiles.push tmpFile
+    else
+      console.log "Couldn't find asset: #{bundle}"
 
   writtenFiles
 
