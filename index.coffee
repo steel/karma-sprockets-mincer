@@ -44,13 +44,15 @@ createSprockets = (config) ->
   tmpPath = process.cwd() + "/tmp/sprockets-mincer/"
 
   # Add the rubygem paths
-  for gem, sprocketsPath of config.rubygems
+  for gem, sprocketsPaths of config.rubygems
     {code, output} = Shell.exec "bundle show #{gem}", silent: true
     if code == 0
       gemPath = output.trim()
       Shell.exec "cd #{gemPath}; npm install"
-      console.log "Appending rubygem path: #{gemPath}/#{sprocketsPath}"
-      config.sprocketsPaths.push "#{gemPath}/#{sprocketsPath}"
+
+      for path in sprocketsPaths
+        console.log "Appending rubygem path: #{gemPath}/#{path}"
+        config.sprocketsPaths.push "#{gemPath}/#{path}"
 
   # Set up the sprockets environment
   for path in config.sprocketsPaths
