@@ -49,3 +49,15 @@ sprocketsBundles: [
   'specs.coffee'
 ]
 ```
+
+You can also add sprockets paths from RubyGems if you are using this in a Ruby/Rails project.
+
+```coffeescript
+# "gem-name": ["array of", "sprockets paths"]
+rubygems: {
+  "rails-widget": ["lib/assets/javascripts", "vendor/assets/javascripts"]
+  "jquery-rails": ["vendor/assets/javascripts"]
+}
+```
+
+This will run grab the path of the bundled gem by running `bundle show` and add them with the specified paths to Sprockets/Mincer.
