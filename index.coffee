@@ -73,7 +73,7 @@ createSprockets = (config) ->
 
   # Write out the bundle files to the tmp directory
   for path in writeFiles(config.sprocketsBundles, sprockets, tmpPath)
-    config.files.push
+    config.files.unshift
       included: true
       served: true
       watched: config.autoWatch

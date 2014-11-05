@@ -32,6 +32,15 @@ Add the plugin to your config file.
   ]
 ```
 
+Then add `sprockets-mincer` to the top of the frameworks list (order is important).
+
+```coffeescript
+frameworks: [
+  "sprockets-mincer"
+  "jasmine"
+]
+```
+
 Next, configure the paths that the Sprockets (Mincer) environment should know about.
 ```coffeescript
 sprocketsPaths: [
