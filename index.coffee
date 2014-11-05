@@ -72,12 +72,17 @@ createSprockets = (config) ->
     sprockets.appendPath(path)
 
   # Write out the bundle files to the tmp directory
+  # Also, preserve the order of the bundles in the config file
+  paths = []
   for path in writeFiles(config.sprocketsBundles, sprockets, tmpPath)
-    config.files.unshift
+    paths.push
       included: true
       served: true
       watched: config.autoWatch
       pattern: path
+
+  # put these files at the top of the files list
+  config.files.unshift.apply(config.files, paths)
 
   # Watch the sprockets paths for file changes
   watchForChanges(config, sprockets, tmpPath)
