@@ -87,7 +87,8 @@ createSprockets = (config) ->
   config.files.unshift.apply(config.files, paths)
 
   # Watch the sprockets paths for file changes
-  watchForChanges(config, sprockets, tmpPath)
+  unless config.singleRun
+    watchForChanges(config, sprockets, tmpPath)
 
 createSprockets.$inject = ['config']
 
