@@ -57,7 +57,7 @@ createSprockets = (config) ->
     {code, output} = Shell.exec "bundle show #{gem}", silent: true
     if code == 0
       gemPath = output.trim()
-      Shell.exec "cd #{gemPath}; npm install"
+      Shell.exec "cd #{gemPath} && [ ! -f package.json ] || npm install"
 
       for path in sprocketsPaths
         console.log "Appending rubygem path: #{gemPath}/#{path}"
