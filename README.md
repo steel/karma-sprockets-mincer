@@ -1,6 +1,6 @@
 # karma-sprockets-mincer
 
-> Serve assets developed for Sprockets with Mincer
+Serve assets developed for Sprockets with Mincer
 
 ## Installation
 
@@ -54,8 +54,6 @@ Then, configure the js bundle files that Sprockets should generate. These files 
 ```coffeescript
 sprocketsBundles: [
   'application.coffee'
-  'spec_helper.coffee'
-  'specs.coffee'
 ]
 ```
 
