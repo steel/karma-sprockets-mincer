@@ -15,13 +15,13 @@
     "email": "steelfu@gmail.com"
   },
   "dependencies": {
-    "mincer": "0.5.13",
-    "haml-coffee": "*",
+    "mincer": "1.2.4",
     "node-fs": "^0.1.7",
     "chokidar": "^1.0.0-rc3",
     "shelljs": "0.3.0",
     "mincer-fileskipper": "*",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "mincer-haml-coffee": "0.0.1"
   },
   "repository": {
     "type": "git",

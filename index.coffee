@@ -7,6 +7,9 @@ Shell = require('shelljs')
 # Skip .erb files because Ruby <> JS
 require("mincer-fileskipper") Mincer, [".erb"]
 
+# Add hamlcoffee support
+require('mincer-haml-coffee') Mincer
+
 # HamlJS is similar to Hamlc. We'll just use Hamlcoffee handle it for now
 Mincer.registerEngine '.hamljs', Mincer.HamlCoffeeEngine
 
