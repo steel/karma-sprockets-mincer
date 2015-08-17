@@ -26,7 +26,7 @@ writeFiles = (bundles, sprockets, tmpPath) ->
   for bundle in bundles
     asset = sprockets.findAsset bundle
 
-    if asset.logicalPath?
+    if asset && asset.logicalPath?
       # write to file
       tmpFile = Path.join(tmpPath, asset.logicalPath)
       tmpFile = tmpFile.replace(/\.js\.coffee$/, '.js')
