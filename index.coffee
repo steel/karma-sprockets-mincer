@@ -3,6 +3,7 @@ Fs = require('node-fs')
 Path = require('path')
 Chokidar = require('chokidar')
 Shell = require('shelljs')
+_ = require('underscore')
 
 # Skip .erb files because Ruby <> JS
 require("mincer-fileskipper") Mincer, [".erb"]
@@ -24,7 +25,19 @@ writeFiles = (bundles, sprockets, tmpPath) ->
   writtenFiles = []
 
   for bundle in bundles
-    asset = sprockets.findAsset(if bundle.pattern? then bundle.pattern else bundle)
+    if typeof bundle == "string"
+      fileConfig = bundle: bundle
+    else
+      fileConfig = bundle
+
+    _.defaults fileConfig,
+      bundle: fileConfig.pattern
+      included: true
+      served: true
+      watched: true
+      nocache: false
+
+    asset = sprockets.findAsset(fileConfig.bundle)
 
     if asset && asset.logicalPath?
       # write to file
@@ -37,8 +50,8 @@ writeFiles = (bundles, sprockets, tmpPath) ->
         Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
 
       Fs.writeFileSync tmpFile, asset.toString()
-      tmpObject = pattern: tmpFile, included: bundle.included ?= true, served: bundle.served ?= true
-      writtenFiles.push(tmpObject)
+      fileConfig.pattern = tmpFile
+      writtenFiles.push(fileConfig)
     else
       console.log "Couldn't find asset: #{bundle}"
 
@@ -47,9 +60,10 @@ writeFiles = (bundles, sprockets, tmpPath) ->
 # Watch path for changes and write out all the bundles to tmp dir
 watchForChanges = (config, sprockets, tmpPath) ->
   for path in config.sprocketsPaths
-    Chokidar.watch(path, persistent: true)
-      .on 'change', ->
-        writeFiles(config.sprocketsBundles, sprockets, tmpPath)
+    if config.autoWatch
+      Chokidar.watch(path, persistent: true)
+        .on 'change', ->
+          writeFiles(config.sprocketsBundles, sprockets, tmpPath)
 
 createSprockets = (config) ->
   sprockets = new Mincer.Environment()
@@ -79,13 +93,7 @@ createSprockets = (config) ->
 
   # Write out the bundle files to the tmp directory
   # Also, preserve the order of the bundles in the config file
-  paths = []
-  for path in writeFiles(config.sprocketsBundles, sprockets, tmpPath)
-    paths.push
-      included: path.included
-      served: path.served
-      watched: config.autoWatch
-      pattern: path.pattern
+  paths = writeFiles(config.sprocketsBundles, sprockets, tmpPath)
 
   # put these files at the top of the files list
   config.files.unshift.apply(config.files, paths)
