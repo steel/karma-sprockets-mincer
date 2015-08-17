@@ -24,7 +24,7 @@ writeFiles = (bundles, sprockets, tmpPath) ->
   writtenFiles = []
 
   for bundle in bundles
-    asset = sprockets.findAsset bundle
+    asset = sprockets.findAsset(if bundle.pattern? then bundle.pattern else bundle)
 
     if asset && asset.logicalPath?
       # write to file
@@ -37,7 +37,8 @@ writeFiles = (bundles, sprockets, tmpPath) ->
         Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
 
       Fs.writeFileSync tmpFile, asset.toString()
-      writtenFiles.push tmpFile
+      tmpObject = pattern: tmpFile, included: bundle.included ?= true, served: bundle.served ?= true
+      writtenFiles.push(tmpObject)
     else
       console.log "Couldn't find asset: #{bundle}"
 
@@ -81,10 +82,10 @@ createSprockets = (config) ->
   paths = []
   for path in writeFiles(config.sprocketsBundles, sprockets, tmpPath)
     paths.push
-      included: true
-      served: true
+      included: path.included
+      served: path.served
       watched: config.autoWatch
-      pattern: path
+      pattern: path.pattern
 
   # put these files at the top of the files list
   config.files.unshift.apply(config.files, paths)
