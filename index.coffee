@@ -3,6 +3,7 @@ Fs = require('node-fs')
 Path = require('path')
 Chokidar = require('chokidar')
 Shell = require('shelljs')
+_ = require('underscore')
 
 # Skip .erb files because Ruby <> JS
 require("mincer-fileskipper") Mincer, [".erb"]
@@ -20,35 +21,49 @@ isAbsolutePath = (path) ->
   path[0] == '/'
 
 # Write all the files out to the tmp directory
-writeFiles = (bundles, sprockets, tmpPath) ->
+writeFiles = (bundles, sprockets, tmpPath, initial = true) ->
   writtenFiles = []
 
   for bundle in bundles
-    asset = sprockets.findAsset bundle
-
-    if asset && asset.logicalPath?
-      # write to file
-      tmpFile = Path.join(tmpPath, asset.logicalPath)
-      tmpFile = tmpFile.replace(/\.js\.coffee$/, '.js')
-      tmpFile = tmpFile.replace(/\.coffee$/, '.js')
-
-      unless Fs.existsSync Path.dirname(tmpFile)
-        # Recursively create the dir with node-fs
-        Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
-
-      Fs.writeFileSync tmpFile, asset.toString()
-      writtenFiles.push tmpFile
+    if typeof bundle == "string"
+      fileConfig = bundle: bundle
     else
-      console.log "Couldn't find asset: #{bundle}"
+      fileConfig = bundle
+
+    _.defaults fileConfig,
+      bundle: fileConfig.pattern
+      included: true
+      served: true
+      watched: true
+      nocache: false
+
+    asset = sprockets.findAsset(fileConfig.bundle)
+    if initial or fileConfig.watched
+      if asset && asset.logicalPath?
+        # write to file
+        tmpFile = Path.join(tmpPath, asset.logicalPath)
+        tmpFile = tmpFile.replace(/\.js\.coffee$/, '.js')
+        tmpFile = tmpFile.replace(/\.coffee$/, '.js')
+
+        unless Fs.existsSync Path.dirname(tmpFile)
+          # Recursively create the dir with node-fs
+          Fs.mkdirSync(Path.dirname(tmpFile), 0o777, true)
+
+        Fs.writeFileSync tmpFile, asset.toString()
+        fileConfig.pattern = tmpFile
+        writtenFiles.push(fileConfig)
+      else
+        console.log "Couldn't find asset: #{fileConfig.bundle}"
 
   writtenFiles
 
 # Watch path for changes and write out all the bundles to tmp dir
 watchForChanges = (config, sprockets, tmpPath) ->
   for path in config.sprocketsPaths
-    Chokidar.watch(path, persistent: true)
-      .on 'change', ->
-        writeFiles(config.sprocketsBundles, sprockets, tmpPath)
+    if config.autoWatch
+      Chokidar.watch(path, persistent: true)
+        .on 'change', ->
+          writeFiles(config.sprocketsBundles, sprockets, tmpPath, false)
 
 createSprockets = (config) ->
   sprockets = new Mincer.Environment()
@@ -78,16 +93,10 @@ createSprockets = (config) ->
 
   # Write out the bundle files to the tmp directory
   # Also, preserve the order of the bundles in the config file
-  paths = []
-  for path in writeFiles(config.sprocketsBundles, sprockets, tmpPath)
-    paths.push
-      included: true
-      served: true
-      watched: config.autoWatch
-      pattern: path
+  config.sprocketsBundles = writeFiles(config.sprocketsBundles, sprockets, tmpPath)
 
   # put these files at the top of the files list
-  config.files.unshift.apply(config.files, paths)
+  config.files.unshift.apply(config.files, config.sprocketsBundles)
 
   # Watch the sprockets paths for file changes
   unless config.singleRun
