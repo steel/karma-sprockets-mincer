@@ -4,6 +4,7 @@ Path = require('path')
 Chokidar = require('chokidar')
 Shell = require('shelljs')
 _ = require('underscore')
+CheckDependencies = require('check-dependencies')
 
 # Skip .erb files because Ruby <> JS
 require("mincer-fileskipper") Mincer, [".erb"]
@@ -77,7 +78,10 @@ createSprockets = (config) ->
       gemPath = output.trim()
 
       if Shell.test '-f', "#{gemPath}/package.json"
-        Shell.exec "cd #{gemPath}; npm install"
+        CheckDependencies.sync({
+          packageDir: gemPath,
+          install: true
+        })
 
       for path in sprocketsPaths
         console.log "Appending rubygem path: #{gemPath}/#{path}"

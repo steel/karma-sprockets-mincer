@@ -22,7 +22,8 @@
     "mincer-fileskipper": "*",
     "underscore": "*",
     "coffee-script": "*",
-    "mincer-haml-coffee": "0.0.1"
+    "mincer-haml-coffee": "0.0.1",
+    "check-dependencies": "^0.11.0"
   },
   "repository": {
     "type": "git",
