@@ -57,6 +57,13 @@ sprocketsBundles: [
 ]
 ```
 
+Optionally configure helpers that the assets might be using.
+
+```coffeescript
+sprocketsHelpers:
+  asset_path: (fileName) -> return "assets/#{fileName}"
+```
+
 You can also add sprockets paths from RubyGems if you are using this in a Ruby/Rails project.
 
 ```coffeescript

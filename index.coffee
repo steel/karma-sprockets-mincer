@@ -95,6 +95,10 @@ createSprockets = (config) ->
     # Add the path to the sprockets environment
     sprockets.appendPath(path)
 
+  # Register helpers if any
+  for helperName, helperValue of config.sprocketsHelpers
+    sprockets.registerHelper helperName, helperValue
+
   # Write out the bundle files to the tmp directory
   # Also, preserve the order of the bundles in the config file
   config.sprocketsBundles = writeFiles(config.sprocketsBundles, sprockets, tmpPath)
