@@ -22,8 +22,8 @@ isAbsolutePath = (path) ->
   path[0] == '/'
 
 # Write all the files out to the tmp directory
-writeFiles = (bundles, sprockets, tmpPath, initial = true) ->
-  writtenFiles = []
+writeFiles = (config, bundles, sprockets, tmpPath, initial = true) ->
+  writtenFiles = {}
 
   for bundle in bundles
     if typeof bundle == "string"
@@ -52,7 +52,9 @@ writeFiles = (bundles, sprockets, tmpPath, initial = true) ->
 
         Fs.writeFileSync tmpFile, asset.toString()
         fileConfig.pattern = tmpFile
-        writtenFiles.push(fileConfig)
+
+        fullPath = Path.join(config.basePath, fileConfig.bundle)
+        writtenFiles[fullPath] = fileConfig
       else
         console.log "Couldn't find asset: #{fileConfig.bundle}"
 
@@ -64,7 +66,7 @@ watchForChanges = (config, sprockets, tmpPath) ->
     if config.autoWatch
       Chokidar.watch(path, persistent: true)
         .on 'change', ->
-          writeFiles(config.sprocketsBundles, sprockets, tmpPath, false)
+          writeFiles(config, config.sprocketsBundles, sprockets, tmpPath, false)
 
 createSprockets = (config) ->
   sprockets = new Mincer.Environment()
@@ -101,10 +103,12 @@ createSprockets = (config) ->
 
   # Write out the bundle files to the tmp directory
   # Also, preserve the order of the bundles in the config file
-  config.sprocketsBundles = writeFiles(config.sprocketsBundles, sprockets, tmpPath)
+  config.sprocketsBundles = writeFiles(config, config.sprocketsBundles, sprockets, tmpPath)
 
-  # put these files at the top of the files list
-  config.files.unshift.apply(config.files, config.sprocketsBundles)
+  # Replace the file config
+  config.files.forEach (obj) ->
+    if config.sprocketsBundles[obj.pattern]
+      _.extend obj, config.sprocketsBundles[obj.pattern]
 
   # Watch the sprockets paths for file changes
   unless config.singleRun

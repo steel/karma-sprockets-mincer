@@ -57,6 +57,15 @@ sprocketsBundles: [
 ]
 ```
 
+Be sure to also add files listed in `sprocketsBundles` to `config.files` in the correct place. `sprockets-mincer` will replace the `pattern` in `config.files` with the one that is compiled.
+
+```
+files: [
+  ...
+  'application.coffee' # this pattern will be replaced automatically
+  ...
+]
+
 Optionally configure helpers that the assets might be using.
 
 ```coffeescript
