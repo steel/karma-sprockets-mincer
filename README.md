@@ -65,6 +65,7 @@ files: [
   'application.coffee' # this pattern will be replaced automatically
   ...
 ]
+```
 
 Optionally configure helpers that the assets might be using.
 
