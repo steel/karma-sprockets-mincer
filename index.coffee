@@ -73,6 +73,14 @@ createSprockets = (config) ->
 
   tmpPath = process.cwd() + "/tmp/sprockets-mincer/"
 
+  # Add additional mincer engines
+  for extension, engine_path of config.mincerEngines
+    unless isAbsolutePath(engine_path)
+      engine_path = Path.join(config.basePath, engine_path)
+
+    engine = require(engine_path)
+    sprockets.registerEngine extension, engine
+  
   # Add the rubygem paths
   for gem, sprocketsPaths of config.rubygems
     {code, output} = Shell.exec "bundle show #{gem}", silent: true
