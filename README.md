@@ -85,3 +85,14 @@ rubygems: {
 ```
 
 This will run grab the path of the bundled gem by running `bundle show` and add them with the specified paths to Sprockets/Mincer.
+
+If you need to use additional Mincer engines there is an option to bind extensions with externally defined engines.
+The path to engine file might be defined as absolute or relative to `basePath`.
+
+```coffeescript
+# "extension": "path-to-engine-definition-file.js"
+mincerEngines: {
+  ".hbs": "./lib/handlebarsjst.js",
+  ".xxx": "/opt/mincer-ext/engine.js"
+}
+```
