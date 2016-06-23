@@ -67,14 +67,18 @@ files: [
 ]
 ```
 
-Optionally configure helpers that the assets might be using.
+### Helpers
+
+You can add helpers that the assets might be using:
 
 ```coffeescript
 sprocketsHelpers:
   asset_path: (fileName) -> return "assets/#{fileName}"
 ```
 
-You can also add sprockets paths from RubyGems if you are using this in a Ruby/Rails project.
+### RubyGems
+
+If you are using this in a Ruby/Rails project, you can add the rubygem paths as well:
 
 ```coffeescript
 # "gem-name": ["array of", "sprockets paths"]
@@ -86,8 +90,9 @@ rubygems: {
 
 This will run grab the path of the bundled gem by running `bundle show` and add them with the specified paths to Sprockets/Mincer.
 
-If you need to use additional Mincer engines there is an option to bind extensions with externally defined engines.
-The path to engine file might be defined as absolute or relative to `basePath`.
+### Additional Mincer engines
+
+The path to engine file can be both absolute or relative to `basePath`.
 
 ```coffeescript
 # "extension": "path-to-engine-definition-file.js"
