@@ -22,7 +22,7 @@
     "mincer-fileskipper": "*",
     "underscore": "*",
     "coffee-script": "*",
-    "mincer-haml-coffee": "0.0.1",
+    "mincer-haml-coffee": "^0.0.2",
     "check-dependencies": "^1.0.1"
   },
   "repository": {
