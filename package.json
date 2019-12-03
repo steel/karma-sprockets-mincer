@@ -15,7 +15,7 @@
     "email": "steelfu@gmail.com"
   },
   "dependencies": {
-    "mincer": "1.2.4",
+    "mincer": "^2.0.1",
     "node-fs": "^0.1.7",
     "chokidar": "^1.0.0-rc3",
     "shelljs": "0.3.0",
