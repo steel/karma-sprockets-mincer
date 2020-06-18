@@ -83,7 +83,7 @@ createSprockets = (config) ->
   
   # Add the rubygem paths
   for gem, sprocketsPaths of config.rubygems
-    {code, output} = Shell.exec "bundle show #{gem}", silent: true
+    {code, output} = Shell.exec "bundle info --path #{gem}", silent: true
     if code == 0
       gemPath = output.trim()
 

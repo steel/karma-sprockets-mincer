@@ -88,7 +88,7 @@ rubygems: {
 }
 ```
 
-This will run grab the path of the bundled gem by running `bundle show` and add them with the specified paths to Sprockets/Mincer.
+This will run grab the path of the bundled gem by running `bundle info --path` and add them with the specified paths to Sprockets/Mincer.
 
 ### Additional Mincer engines
 
