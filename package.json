@@ -15,15 +15,15 @@
     "email": "steelfu@gmail.com"
   },
   "dependencies": {
-    "mincer": "^2.0.1",
-    "node-fs": "^0.1.7",
+    "check-dependencies": "^1.0.1",
     "chokidar": "^1.0.0-rc3",
-    "shelljs": "0.3.0",
-    "mincer-fileskipper": "*",
-    "underscore": "*",
     "coffee-script": "*",
+    "mincer": "^2.0.1",
+    "mincer-fileskipper": "*",
     "mincer-haml-coffee": "^0.0.2",
-    "check-dependencies": "^1.0.1"
+    "node-fs": "^0.1.7",
+    "shelljs": "^0.8.4",
+    "underscore": "*"
   },
   "repository": {
     "type": "git",

@@ -83,9 +83,9 @@ createSprockets = (config) ->
   
   # Add the rubygem paths
   for gem, sprocketsPaths of config.rubygems
-    {code, output} = Shell.exec "bundle info --path #{gem}", silent: true
+    {code, stdout} = Shell.exec "bundle info --path #{gem}", silent: true
     if code == 0
-      gemPath = output.trim()
+      gemPath = stdout.trim()
 
       if Shell.test '-f', "#{gemPath}/package.json"
         CheckDependencies.sync({
