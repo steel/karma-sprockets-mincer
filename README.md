@@ -101,3 +101,23 @@ mincerEngines: {
   ".xxx": "/opt/mincer-ext/engine.js"
 }
 ```
+
+### Additional Mincer processors
+
+It is also possible to pass additional [preprocessors] and [postprocessors]. As for engines,
+the path to the processor file can be both absolute or relative to `basePath`.
+
+```coffeescript
+# "mimeType":  [ "path-to-processor.js", "path-to-another-processor.js" ]
+mincerPreprocessors: {
+  "text/css": [ "./stylesheets/frobnicate.js", "./stylesheets/decorate.js" ],
+  "application/javascript": [ "/opt/instrumentation/instrumenter.js" ]
+},
+
+mincerPostprocessors: {
+  "application/javascript": [ "/opt/instrumentation/report.js" ]
+}
+```
+
+[preprocessors]: http://nodeca.github.io/mincer/#Processing.prototype.registerPreProcessor
+[postprocessors]: http://nodeca.github.io/mincer/#Processing.prototype.registerPostProcessor

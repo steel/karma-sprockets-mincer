@@ -73,13 +73,26 @@ createSprockets = (config) ->
 
   tmpPath = process.cwd() + "/tmp/sprockets-mincer/"
 
-  # Add additional mincer engines
-  for extension, engine_path of config.mincerEngines
-    unless isAbsolutePath(engine_path)
-      engine_path = Path.join(config.basePath, engine_path)
+  registerExtension = (register, registrationKey, extensionPath) ->
+    unless isAbsolutePath(extensionPath)
+      extensionPath = Path.join(config.basePath, extensionPath)
 
-    engine = require(engine_path)
-    sprockets.registerEngine extension, engine
+    extension = require(extensionPath)
+    register.call sprockets, registrationKey, extension
+
+  # Add additional mincer engines
+  for fileExtension, enginePath of config.mincerEngines
+    registerExtension sprockets.registerEngine, fileExtension, enginePath
+
+  # Add additional mincer preprocessors
+  for mimeType, preProcessors of config.mincerPreprocessors
+    for processorPath in preProcessors
+      registerExtension sprockets.registerPreProcessor, mimeType, processorPath
+
+  # Add additional mincer postprocessors
+  for mimeType, postProcessors of config.mincerPostprocessors
+    for processorPath in postProcessors
+      registerExtension sprockets.registerPostProcessor, mimeType, processorPath
   
   # Add the rubygem paths
   for gem, sprocketsPaths of config.rubygems
