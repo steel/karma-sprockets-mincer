@@ -83,7 +83,7 @@ createSprockets = (config) ->
   
   # Add the rubygem paths
   for gem, sprocketsPaths of config.rubygems
-    {code, stdout} = Shell.exec "bundle info --path #{gem}", silent: true
+    {code, stdout, stderr} = Shell.exec "bundle info --path #{gem}", silent: true
     if code == 0
       gemPath = stdout.trim()
 
@@ -96,6 +96,9 @@ createSprockets = (config) ->
       for path in sprocketsPaths
         console.log "Appending rubygem path: #{gemPath}/#{path}"
         config.sprocketsPaths.push "#{gemPath}/#{path}"
+    else
+      errorMessage "Unable to find path for #{gem}: #{stderr}"
+      throw new Error(errorMessage)
 
   # Set up the sprockets environment
   for path in config.sprocketsPaths
